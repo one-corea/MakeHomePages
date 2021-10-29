@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+<link href="https://fonts.googleapis.com/css?family=Tomorrow&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<style>
+* {
+	font-family: 'Tomorrow', sans-serif;
+	font-family: 'Black Han Sans', sans-serif;
+	margin: 5px;
+	padding: 0;
+}
+
+.ipw {
+	margin: 0 auto;
+	width: 440px;
+	border: 3px solid #000000;
+	padding: 10px;
+	font-size: 1.2em;
+	margin-top: 300px;
+}
+table {
+	width: 440px;
+}
+td{
+	text-align: center;
+	padding-left: 20px;
+
+	
+}
+tr:first-child td {
+	width: 50px;
+
+}
+.last{
+	width: 500px;
+	text-align: left;
+	
+}
+#btn{
+	width: 80px;
+	height: 25px;
+	margin-left: 110px;
+}
+input {
+	width: 260px;
+	height: 25px;
+	float: left;
+}
+
+</style>
+<script>
+	$(document).ready(function() {
+
+		$('#btn').click(function() {
+			var id = $('#id').val();
+			var pw = $('#pw').val();
+			var check = 0;
+			$.ajax({
+				url : "data.json",
+				dataType : "json",
+				success : function(data) {
+					$(data).each(function(key, value) {
+						if (id == (value.id) && pw == (value.pw)) {
+							check = 1;
+						}
+					});
+					if (check == 1) {
+						alert("로그인하셧습니다");
+						$('#id').val("");
+						$('#pw').val("");
+						location.replace('index.html');//메인페이지로 이동 본인의 메인페이지를 넣으세요
+
+					} else {
+						alert("잘못입력하셧습니다.");
+						$('#id').val("");
+						$('#pw').val("");
+					}
+				}
+			});
+
+		});
+	});
+</script>
+</head>
+<body>
+	<div class="ipw">
+
+		<table>
+			<tr>
+				<td>I&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D</td>
+				<td colspan="2"><input type="text" id="id"
+					placeholder="아이디를 입력하세요" /></td>
+			</tr>
+
+			<tr>
+				<td>P&nbsp;&nbsp;&nbsp;&nbsp;W</td>
+				<td colspan="2"><input type="password" id="pw"
+					placeholder="비밀번호를 입력하세요" /></td>
+			</tr>
+			<tr>
+				<td colspan="3"><input type="button" id="btn" value="로그인" /></td>
+			</tr>
+			<tr >
+				<td colspan="3" class="last">회원이 아니신가요? <a href="signup.html">회원가입</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

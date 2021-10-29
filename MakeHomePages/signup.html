@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+<link href="https://fonts.googleapis.com/css?family=Tomorrow&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<style>
+* {
+	font-family: 'Black Han Sans', sans-serif;
+	font-family: 'Tomorrow', sans-serif;
+	margin: 5px;
+	padding: 0;
+}
+
+.contaiber {
+	margin-top: 200px;
+}
+
+form {
+	margin: 0 auto;
+	width: 530px;
+	border: 3px solid #000000;
+	padding: 10px;
+}
+
+table {
+	width: 530px;
+}
+
+h4 {
+	font-size: 2em;
+}
+
+h5 {
+	font-size: 1.3em;
+}
+
+input {
+	width: 253px;
+	height: 25px;
+	float: left;
+}
+
+#btn {
+	width: 65px;
+}
+
+#t1, #t2, #t3 {
+	width: 70px;
+	float: none;
+}
+}
+</style>
+<script>
+	$(document).ready(function() {
+
+		$('#btn').click(function() {//아이디 중복체크
+			var id = $('#id').val();
+			var check = 0;
+			$.ajax({
+				url : "data.json",
+				dataType : "json",
+				success : function(data) {
+					$(data).each(function(ket, value) {
+						if (id == (value.id)) {
+							check = 1;
+						}
+					});
+					if (check == 1) {
+						alert("사용할 수 없는 아이디 입니다.");
+						$('#id').val("");
+					} else {
+						alert("사용할수 있는 아이디 입니다.");
+					}
+				}
+			});
+
+		});
+		$('#btn-new').click(function fnCheck() {//유효성체크
+			var name = $('#name').val();
+			var id = $('#id').val();
+			var pw = $('#pw').val();
+			var pw2 = $('#pw2').val();
+			var em = $('#email').val();
+			var t1 = $('#t1').val();
+			var t2 = $('#t2').val();
+			var t3 = $('#t3').val();
+			var reg = /^01([0|1|6|7|8|9]?)$/;//전화번호 앞자리
+			var reg2 = /^\d{3,4}$/;//가운데
+			var reg3 = /^\d{4}$/;//끝자리
+			var rege = /^\w{5,12}@[a-z]{2,10}[\.][a-z]{2,3}[\.]?[a-z]{0,2}$/;//email 아래보시면 타입자체를 메일로 설정하면 그걸로도 체크가 되지만 가끔씩 안할때가 많음.
+
+			if (!name) {
+				$('#name').focus();
+				alert("이름를 입력해주세요");
+				return false;
+			} else if (!id) {
+				$('#id').focus();
+				alert("아이디를 입력해주세요");
+				return false;
+			} else if (!pw) {
+				$('#pw').focus();
+				alert("비밀번호를 입력해주세요");
+				return false;
+			} else if (!pw2) {
+				$('#pw2').focus();
+				alert("비밀번호확인을 입력해주십시오");
+				return false;
+			} else if (pw != pw2) {
+				$('#pw2').val("");
+				$('#pw2').focus();
+				alert("비밀번호가 일치하지 않습니다.");
+				return false;
+			} else if (!em) {
+				$('#email').focus();
+				alert("이메일를 입력해주세요");
+				return false;
+			} else if (!rege.test(em)) {
+				$('#email').focus();
+				alert("이메일 양식에 맞게 입력해 주세요");
+				return false;
+			} else if (!t1) {
+				alert("전화번호 첫번째자리 입력하세요!");
+				$('#t1').focus();
+				return false;
+			} else if (!reg.test(t1)) {
+				alert("010, 011, 016, 017, 018, 019,o19만 가능합니다.")
+				$("#t1").val("")
+				$("#t1").focus();
+				return false;
+			} else if (!t2) {
+				alert("전화번호 두번째자리를 입력하세요!");
+				$("#t2").focus();
+				return false;
+			} else if (!reg2.test(t2)) {
+				alert("전화번호을 두번째 자리를 3~4개의 숫자로 꼭 입력하세요!");
+				$("#t2").val("");
+				$("#t2").focus();
+				return false;
+			}else if (!t3) {
+				alert("전화번호 세번째자리를 입력하세요!");
+				$("#t3").focus();
+				return false;
+			} else if (!reg3.test(t3)) {
+				alert("전화번호 세번째 자리를 4개의 숫자로 꼭 입력하세요!");
+				$("#t3").val("");
+				$("#t3").focus();
+				return false;
+			} else {
+				alert("회원가입이 완료되었습니다.");
+				location.replace('index.html');// 메인페이지 이동용
+				return false;
+
+			}
+		})
+	});
+</script>
+</head>
+<body>
+	<div class="contaiber">
+		<form onsubmit="return whenSubmit();">
+			<table>
+				<thead>
+					<tr>
+						<th colspan="3"><h4>회 원 가 입</h4></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><h5>&nbsp;이
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;름</h5></td>
+						<td colspan="2"><input id="name" type="text"></td>
+					</tr>
+					<tr>
+						<td><h5>&nbsp;&nbsp;I
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp D</h5></td>
+						<td><input type="text" id="id"></td>
+						<td><input id="btn" type="button" value="중복확인">
+					</tr>
+					<tr>
+						<td><h5>&nbsp;비&nbsp;밀 &nbsp;번&nbsp;호</h5></td>
+						<td colspan="2"><input id="pw" type="password"></td>
+					</tr>
+					<tr>
+						<td><h5>비밀번호확인</h5></td>
+						<td colspan="2"><input id="pw2" type="password"></td>
+					</tr>
+					<tr>
+						<td><h5>&nbsp;이&nbsp;&nbsp; 메&nbsp; &nbsp;일</h5></td>
+						<td colspan="2"><input id="email" type="email"></td>
+					</tr>
+					<tr>
+						<td><h5>&nbsp;전&nbsp;화&nbsp;번&nbsp;호</h5></td>
+						<td colspan="2"><input id="t1" type="text"> - <input
+							id="t2" type="text"> - <input id="t3" type="text"></td>
+					</tr>
+					<tr>
+						<td colspan=5"><input id="btn-new" type="submit" value="회원가입" />
+							<input class=btn-clen type="reset" value="가입취소"
+							onclick="location='index.html'"></td>
+					</tr>
+
+
+				</tbody>
+			</table>
+		</form>
+	</div>
+</body>
+</html>
